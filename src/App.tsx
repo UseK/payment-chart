@@ -8,7 +8,9 @@ function App() {
   const [end, setEnd] = React.useState(20);
   return (
       <div className="container">
-          <MyChart/>
+          <div>
+              <MyChart/>
+          </div>
           <PaymentsTable payments={ PAYMENTS } start={ start } end={ end }/>
       </div>
   );

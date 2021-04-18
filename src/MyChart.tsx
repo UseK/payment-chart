@@ -1,4 +1,6 @@
+import React from "react";
 import { Chart } from "chart.js";
+
 import {
     ArcElement,
     LineElement,
@@ -24,30 +26,6 @@ import {
     Tooltip
 } from 'chart.js';
 
-import React from "react";
-
-
-export function MyCanvas(props: { handleContext(ctx: CanvasRenderingContext2D): void }) {
-    const canvasRef = React.useRef(null);
-
-    const getContext = (): CanvasRenderingContext2D => {
-        const canvas: any = canvasRef.current;
-
-        return canvas.getContext('2d');
-    };
-
-    React.useEffect(() => {
-        const ctx: CanvasRenderingContext2D = getContext();
-        props.handleContext(ctx);
-    })
-
-    return (
-        <div>
-            <canvas className="canvas" ref={canvasRef} />
-        </div>
-    );
-}
-
 Chart.register(
     ArcElement,
     LineElement,
@@ -72,6 +50,14 @@ Chart.register(
     Title,
     Tooltip
 );
+
+function MyCanvas(props: { handleContext(ctx: CanvasRenderingContext2D): void }) {
+    const canvasRef: React.RefObject<HTMLCanvasElement> = React.useRef(null);
+    React.useEffect(() => {
+        props.handleContext(canvasRef.current!.getContext('2d')!);
+    })
+    return <canvas className="canvas" ref={canvasRef} />
+}
 
 export function MyChart() {
     return <MyCanvas handleContext={ctx => {
