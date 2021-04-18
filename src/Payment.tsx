@@ -9,16 +9,16 @@ export const records = parse(data, {
 export function PaymentsTable(props: { records: {[key: string]: string}[] }) {
     return <table>
         <thead>
-            <tr>
-                { Object.keys(props.records[0]).map(k => <th key={ `head-${k}`}> {k} </th>)}
-            </tr>
+        <tr>
+            { Object.keys(props.records[0]).map(k => <th key={ `head-${k}`}> {k} </th>)}
+        </tr>
         </thead>
         <tbody>
-            { props.records.map((record, ind) => <tr key={ `tr-${ind}`}>
-                <td key={`td-date-${ind}`}> { record.date }</td>
-                <td key={`td-name-${ind}`}> { record.name }</td>
-                <td key={`td-value-${ind}`}> { record.value }</td>
-            </tr>) }
+        { props.records.map((record, ind) => <tr key={ `tr-${ind}`}>
+            <td key={`td-date-${ind}`}> { record.date }</td>
+            <td key={`td-name-${ind}`}> { record.name }</td>
+            <td key={`td-value-${ind}`}> { record.value }</td>
+        </tr>) }
         </tbody>
     </table>
 }
