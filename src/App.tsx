@@ -1,10 +1,12 @@
 import React from 'react';
 import './App.css';
-import {PaymentsTable, records} from "./Payment";
+import {PaymentsTable, PAYMENTS} from "./Payment";
 
 function App() {
+  const [start, setStart] = React.useState(0);
+  const [end, setEnd] = React.useState(20);
   return (
-      <PaymentsTable records={ records }/>
+      <PaymentsTable payments={ PAYMENTS } start={ start } end={ end }/>
   );
 }
 

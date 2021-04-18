@@ -1,24 +1,36 @@
 import parse from "csv-parse/lib/sync";
 import { data } from "./data";
 
-export const records = parse(data, {
+interface Payment {
+    date: string,
+    name: string,
+    value: number,
+}
+
+export const PAYMENTS: Payment[] = parse(data, {
     columns: ["date", "name", "value", "", "", "", ""],
     skip_empty_lines: true,
 });
 
-export function PaymentsTable(props: { records: {[key: string]: string}[] }) {
+export function PaymentsTable(props: { payments: Payment[], start: number, end: number }) {
     return <table>
         <thead>
         <tr>
-            { Object.keys(props.records[0]).map(k => <th key={ `head-${k}`}> {k} </th>)}
+            <th>number</th>
+            { Object.keys(props.payments[0]).map(k => <th key={ `head-${k}`}> {k} </th>)}
         </tr>
         </thead>
         <tbody>
-        { props.records.map((record, ind) => <tr key={ `tr-${ind}`}>
-            <td key={`td-date-${ind}`}> { record.date }</td>
-            <td key={`td-name-${ind}`}> { record.name }</td>
-            <td key={`td-value-${ind}`}> { record.value }</td>
-        </tr>) }
+        { range(props.start, props.end).map(i => <tr key={`tr-${i}`}>
+            <td key={`td-number-${i}`}>{i}</td>
+            <td key={`td-date-${i}`}> { props.payments[i].date }</td>
+            <td key={`td-name-${i}`}> { props.payments[i].name }</td>
+            <td key={`td-value-${i}`}> { props.payments[i].value }</td>
+        </tr> )}
         </tbody>
     </table>
 }
+
+const range = (start: number, end: number) => (
+    [...Array(end - start)].map((_, i) => (start + i))
+);
