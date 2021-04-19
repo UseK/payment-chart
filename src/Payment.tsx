@@ -2,7 +2,7 @@ import parse from "csv-parse/lib/sync";
 import { data } from "./data";
 
 interface Payment {
-    date: string,
+    date: Date,
     name: string,
     value: number,
 }
@@ -34,3 +34,9 @@ export function PaymentsTable(props: { payments: Payment[], start: number, end: 
 const range = (start: number, end: number) => (
     [...Array(end - start)].map((_, i) => (start + i))
 );
+
+function* groupBy<T>(arr: T[]) {
+    for (let item of arr) {
+        yield [item]
+    }
+}
