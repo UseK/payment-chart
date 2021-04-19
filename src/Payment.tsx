@@ -1,7 +1,7 @@
 import parse from "csv-parse/lib/sync";
 import { data } from "./data";
 
-interface Payment {
+export interface Payment {
     date: Date,
     name: string,
     value: number,
@@ -35,8 +35,17 @@ const range = (start: number, end: number) => (
     [...Array(end - start)].map((_, i) => (start + i))
 );
 
-function* groupBy<T>(arr: T[]) {
-    for (let item of arr) {
-        yield [item]
+export function* groupBy<T>(arr: T[], keyF: (item: T) => unknown) {
+    let currentKey = keyF(arr[0]);
+    let currentStack: T[] = [];
+    for (const item of arr) {
+        const newKey = keyF(item);
+        if (currentKey === newKey) {
+            currentStack.push(item);
+        } else {
+            yield currentStack
+            currentKey = newKey;
+            currentStack = [];
+        }
     }
 }
