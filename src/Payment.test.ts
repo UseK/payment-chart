@@ -1,5 +1,5 @@
 import { } from '@testing-library/react';
-import {groupBy, Payment} from "./Payment";
+import {groupBy, Payment, PAYMENTS} from "./Payment";
 
 test('groupBy()', () => {
     const payments: Payment[] = [
@@ -74,4 +74,17 @@ test('groupBy()', () => {
     const grouped = groupBy(payments, p => p.date.getFullYear());
     const groups = Array.from(grouped);
     expect(groups).toStrictEqual(expected);
-})
+});
+
+test('groupBy() in PAYMENT', () => {
+    const grouped = groupBy(PAYMENTS, p => p.date.getFullYear());
+    const groups = Array.from(grouped);
+    for (const [year, paymentsInYear] of groups) {
+        //console.log(year);
+        //console.log(paymentsInYear[0])
+        //console.log(paymentsInYear[1])
+        const sum  = paymentsInYear.map(p => p.value).reduce((acc, p) => acc + p);
+        //console.log(sum);
+    }
+});
+
