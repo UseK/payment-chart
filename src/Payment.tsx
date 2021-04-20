@@ -43,9 +43,10 @@ export function* groupBy<T>(arr: T[], keyF: (item: T) => unknown) {
         if (currentKey === newKey) {
             currentStack.push(item);
         } else {
-            yield currentStack
+            yield [currentKey, currentStack];
             currentKey = newKey;
-            currentStack = [];
+            currentStack = [item];
         }
     }
+    yield [currentKey, currentStack];
 }
