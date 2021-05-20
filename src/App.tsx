@@ -23,6 +23,11 @@ function App() {
                               labels={ years }
                               data={ sums }/>
           </div>
+          <div>
+              <SingleBarChart label={ '# of Votes' }
+                              labels={ years }
+                              data={ sums }/>
+          </div>
           <PaymentsTable payments={ PAYMENTS } start={ start } end={ end }/>
       </div>
   );

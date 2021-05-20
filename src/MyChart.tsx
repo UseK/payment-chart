@@ -51,12 +51,14 @@ Chart.register(
     Tooltip
 );
 
+let idCounter = 0;
+
 function MyCanvas(props: { handleContext(ctx: CanvasRenderingContext2D): void }) {
     const canvasRef: React.RefObject<HTMLCanvasElement> = React.useRef(null);
     React.useEffect(() => {
         props.handleContext(canvasRef.current!.getContext('2d')!);
     })
-    return <canvas className="canvas" ref={canvasRef} />
+    return <canvas id={`canvas-${idCounter}`} className="canvas" ref={canvasRef} />
 }
 
 export interface MyChartProps {
