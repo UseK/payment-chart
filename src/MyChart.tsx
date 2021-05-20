@@ -98,7 +98,7 @@ export function SingleBarChart(props: MyChartProps) {
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
                     }
                 }
             }

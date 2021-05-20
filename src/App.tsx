@@ -4,56 +4,59 @@ import {PaymentsTable, PAYMENTS, groupBy, Payment} from "./Payment";
 import {SingleBarChart} from "./MyChart";
 
 
-function sumsInYear(payments: Payment[]): { years: string[]; sums: number[] } {
+function sumsInYear(payments: Payment[]): { labels: string[]; data: number[] } {
     const grouped = groupBy(payments, p => p.date.getFullYear());
-    const groups = Array.from(grouped);
-    let labels = [];
-    let data = [];
-    for (const [year, paymentsInYear] of groups) {
-        labels.push(`${year}`);
-        const sum = paymentsInYear.map(p => p.value).reduce((acc, p) => acc + p);
-        data.push(sum);
-    }
-    return {years: labels, sums: data};
+    return aggregate(grouped);
 }
 
-function sumsInMonth(payments: Payment[], year: number) {
-    const grouped =  groupBy(
-        payments.filter(p => p.date.getFullYear() === year),
-        p => p.date.getMonth());
+function sumsInMonth(payments: Payment[], year: number): { labels: string[]; data: number[] } {
+    const grouped =  groupBy( payments.filter(p => p.date.getFullYear() === year), p => p.date.getMonth() + 1);
+    return aggregate(grouped);
+}
+
+function sumsInAllMonth(payments: Payment[]): { labels: string[]; data: number[] } {
+    const grouped =  groupBy( payments, p => p.date.getFullYear() * 100 + p.date.getMonth() + 1);
+    return aggregate(grouped);
+}
+
+function aggregate<T>(grouped: Generator<[T, Payment[]], void, unknown>) {
     const groups = Array.from(grouped);
     const labels = [];
     const data = [];
-    for (const [month, paymentsInYear] of groups) {
-        labels.push(`${month}`);
+    for (const [key, paymentsInYear] of groups) {
+        labels.push(`${key}`);
         const sum = paymentsInYear.map(p => p.value).reduce((acc, p) => acc + p);
         data.push(sum);
     }
-    return {months: labels, sums: data};
+    return {labels, data};
 }
+
 
 function TotalAmountInYear(props: { year: number }) {
-    const {months, sums} = sumsInMonth(PAYMENTS, props.year);
+    const {labels, data} = sumsInMonth(PAYMENTS, props.year);
     return <div>
         <SingleBarChart label={ `Total Amount in ${props.year}` }
-                        labels={ months }
-                        data={ sums }/>
+                        labels={ labels }
+                        data={ data }/>
     </div>
-
-
 }
+
 function App() {
     const [start, setStart] = React.useState(0);
     const [end, setEnd] = React.useState(20);
-    const {years, sums} = sumsInYear(PAYMENTS);
+    const {labels, data} = sumsInYear(PAYMENTS);
+    const {labels: months, data: sums} = sumsInAllMonth(PAYMENTS);
     return (
         <div>
             <div>
                 <SingleBarChart label={ 'Total Amount each Year' }
-                                labels={ years }
+                                labels={ labels }
+                                data={ data }/>
+                <SingleBarChart label={ 'Total Amount each Month' }
+                                labels={ months }
                                 data={ sums }/>
             </div>
-            { years.map(year => <TotalAmountInYear year={parseInt(year)}/>)}
+            { labels.map(year => <TotalAmountInYear year={parseInt(year)}/>)}
             <PaymentsTable payments={ PAYMENTS } start={ start } end={ end }/>
         </div>
     );
