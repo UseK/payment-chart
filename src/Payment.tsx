@@ -8,14 +8,14 @@ export interface Payment {
 }
 
 export const PAYMENTS: Payment[] = parse(data, {
-    columns: ["date", "name", "value", "", "", "", ""],
+    columns: ["date", "name", "value"],
     skip_empty_lines: true,
     cast: (v, c) => {
         if(c.index === 0) {
             return new Date(v);
         }
         if (c.index === 2) {
-            return parseInt(v);
+            return parseInt(v) || 0;
         }
         return v;
     }
