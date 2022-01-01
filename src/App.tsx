@@ -91,19 +91,23 @@ function App() {
     const categorized = cagegorySumsInYearMonth(PAYMENTS, 202111, EXCLUDE_CATEGORIES);
     return (
         <div>
-            <div>
-                <SingleBarChart label={'Total Amount each Year'}
-                    labels={labels}
-                    data={data} />
-                <SingleBarChart label={'Total Amount each Month'}
-                    labels={months}
-                    data={sums} />
-                {
-
-                }
-                <PieChart label={'Rate in 2021-11 caregory'}
-                    labels={categorized.labels}
-                    data={categorized.data} />
+            <h1 className="text-3xl font-bold underline">      Hello world!    </h1>
+            <div className="flex flex-row">
+                <div className="basis-1/4">
+                    <SingleBarChart label={'Total Amount each Year'}
+                        labels={labels}
+                        data={data} />
+                </div>
+                <div className="basis-1/4">
+                    <SingleBarChart label={'Total Amount each Month'}
+                        labels={months}
+                        data={sums} />
+                </div>
+                <div className="basis-1/2">
+                    <PieChart label={'Rate in 2021-11 caregory'}
+                        labels={categorized.labels}
+                        data={categorized.data} />
+                </div>
             </div>
             {labels.map(year => <TotalAmountInYear year={parseInt(year)} />)}
             <PaymentsTable payments={PAYMENTS} start={start} end={end} />
