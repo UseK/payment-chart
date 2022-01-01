@@ -1,0 +1,6 @@
+export const CATEGORY_MAP: { [key: string]: string } = {
+    "XX電力": "固定費",
+    "": "その他",
+}
+
+export const EXCLUDE_CATEGORIES: string[] = [ "その他" ];
